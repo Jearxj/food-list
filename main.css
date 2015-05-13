@@ -1,0 +1,133 @@
+* {
+    border: 1px dashed blue;
+}-->
+
+h1 {
+    font-family: Tahoma;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#top-labels {
+    list-style-type: none;
+    text-align: center;
+}
+
+#top-list {
+    font-family: Tahoma;
+    font-size: 24px;
+    
+    display: inline-block;
+    margin: 0px 220px;
+    text-align: center;
+    
+}
+
+.box-one {
+    width: 500px;
+    height: 500px;
+    border: 5px solid black;
+    float: left;
+    margin: 0px 25px 0px 75px;
+}
+
+.box-two {
+    width: 500px;
+    height: 500px;
+    border: 5px solid black;
+    float: right;
+    margin: 0px 75px 0px 25px;
+}
+
+.submit-box {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 350px;
+    padding: 4px;
+    font-family: 'Electrolize', sans-serif;
+    font-size: 15px;
+    /*background-color: #B8B8B8;*/
+    border: 2px solid black;
+}
+
+input::-webkit-input-placeholder {
+    color: #4C4C4C;
+}
+
+input:-moz-placeholder {
+    color: #4C4C4C;
+}
+
+input::-moz-placeholder {
+    color: #4C4C4C;
+}
+
+input:-ms-placeholder {
+    color: #4C4C4C;
+}
+
+input:focus {
+    outline: none;
+}
+
+.items {
+    position: relative;
+    margin: 60px;
+    margin-top: 0;
+    padding-left: 15px;
+    display: block;
+    font-family: 'Electrolize', sans-serif;
+    color: #4C4C4C;
+    /*border: 2px solid #4C4C4C;*/
+}
+
+.items p {
+    /*font-family: 'Orbitron', sans-serif;*/
+    font-family: 'Electrolize', sans-serif;
+    color: #4C4C4C;
+    display: block;
+    cursor: crosshair;
+}
+
+.fa-arrow-right {
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.fa-arrow-right:hover {
+    cursor: default;
+}
+ol {
+    padding-left: 20px;
+}
+
+.crossout {
+    text-decoration: line-through;
+}
+
+.fa-trash {
+    position: absolute;
+    margin-top: -42px;
+    margin-left: 450px;
+}
+
+.fa-trash:hover {
+    cursor: default;
+}
+
+.fa-times {
+    float: right;
+}
+
+.fa-times:hover {
+    cursor: default;
+}
+
+li:last-child {
+    list-style: none;
+}
