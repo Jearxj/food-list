@@ -131,3 +131,13 @@ ol {
 li:last-child {
     list-style: none;
 }
+
+#add-category {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    padding: 4px;
+    width: 200px;
+    border: 2px solid gray;
+    border-radius: 5px;
+}
