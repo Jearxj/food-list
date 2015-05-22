@@ -140,4 +140,6 @@ li:last-child {
     width: 200px;
     border: 2px solid gray;
     border-radius: 5px;
+    font-family: 'Electrolize', sans-serif;
+    font-size: 15px;
 }
