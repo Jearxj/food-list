@@ -17,20 +17,23 @@
       </ul>
     </div>
       <div class="box-one">
-        <form>
-          <input id="submit-box1" class="submit-box" type="text" name="items-input" autocomplete="off" placeholder="What do you want to buy?">
-        </form>
-        <i id="trash1" class="fa fa-trash fa-lg"></i>
+        <div id="topBoxOne">
+        <input id="submit-box1" class="submit-box" type="text" name="items-input" autocomplete="off" placeholder="What do you want to buy?">
+        <!--<i id="trash1" class="fa fa-trash fa-lg"></i>-->
+        </div>
         <div id="items1" class="items">
           <ol></ol>
         </div>
       </div>
       <div class="box-two">
-        <form>
-          <input id="submit-box2" class="submit-box" type="text" name="items-input" autocomplete="off" placeholder="What do you want to buy?">
+        <div class="forms">
+          <input id="submit-box2" class="submit-box" type="text" name="items-input" autocomplete="off" placeholder="What do you want to keep track of?">
+          <!--<i id="trash2" class="fa fa-trash fa-lg"></i>-->
           <input id="add-category" type="text" name="add-category" autocomplete="off" placeholder="Add a category...">
-        </form>
-        <i id="trash2" class="fa fa-trash fa-lg"></i>
+          <select id="category" name="category">
+            <option value="Add a new category">Categories</option>
+          </select>
+        </div>
         <div id="items2" class="items">
           <dl></dl>
         </div>  
