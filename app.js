@@ -33,6 +33,7 @@ $(document).ready(function () {
       var data = $(this).text();
       var editor = makeEditor(data);
       $(this).replaceWith(editor);
+      editor.focus();
     };
   
     var item_input = function(editor) {
