@@ -15,12 +15,15 @@ $(document).ready(function () {
     }
     */
     var newIn = function() {
-        $('#items2').append('<input id="submit-box2" class="submit-box" type="text" placeholder="Filter Tags...">');
-        _keyup();
+      var item = $('<li></li>');
+      var editor = $('<input id="item-name" type="text" placeholder="Item...">')
+      item_input(editor);      
+      item.append(editor);
+      $('#items2').append(item);
     }
     
-    var _keyup = function() {
-        $('#submit-box2').on('keyup', function(event) {
+    var item_input = function(editor) {
+        editor.on('keyup', function(event) {
             var item = $(this).val();
             console.log("1 item:", item);
             if (event.which === 13) {
@@ -31,9 +34,15 @@ $(document).ready(function () {
                     alert("Please type in an item!");
                     return;
                 }
-                $('#items2').text(item);
+                
+                var item_name = $('<h3></h3>');
+                item_name.on('click', function(event) {
+                  alert('hello!');
+                })
+                item_name.text(item);
+                //$('#items2').append(item_name);
+                $(this).replaceWith(item_name);
                 newIn();
-                $('#items2').append('<span></span>');
                 //$('#items2 input:last').append(newXbutton());
                 /*
                 $('#items2 dd:last').append(newXbutton());
@@ -44,9 +53,9 @@ $(document).ready(function () {
                 $('#items2 dd:last span').text(item);
             }
             */  
-                $('#submit-box2').val(''); 
+                $('#item-name').val(''); 
             } else {
-                $('#items2 span:last').text(item);
+                $('#items2 h3:last').append(item_name);
             }
         })
     };
@@ -65,7 +74,7 @@ $(document).ready(function () {
         return x;
     };
     
-    $('.box-one').on('keyup', function(event) {
+    $('#submit-box1').on('keyup', function(event) {
         var item = $('#submit-box1').val();
         console.log("1 item:", item);
         if (event.which === 13) {
@@ -101,7 +110,6 @@ $(document).ready(function () {
         $(this).toggleClass('crossout');
     })
     
-    _keyup();
     /*
     $('#add-category').on('keyup', function(event) {
         var newCategory = $(this).val();
