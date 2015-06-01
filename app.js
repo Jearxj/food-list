@@ -5,11 +5,56 @@ $(document).ready(function () {
     var newLi = function() {
         $('#items1 ol').append('<li><span></span></li>');
     };
+    /*
     var newDt = function() {
         $('#items2 dl').append('<dt><span></span></dt>');
     };
+    
+    var newDd = function() {
+        $('#items2 dl').append('<dd><span></span></dd>');
+    }
+    */
+    var newIn = function() {
+        $('#items2').append('<input id="submit-box2" class="submit-box" type="text" placeholder="Filter Tags...">');
+        _keyup();
+    }
+    
+    var _keyup = function() {
+        $('#submit-box2').on('keyup', function(event) {
+            var item = $(this).val();
+            console.log("1 item:", item);
+            if (event.which === 13) {
+                console.log("2 enter key");
+                event.preventDefault();
+                if (item.length === 0) {
+                    console.log("false");
+                    alert("Please type in an item!");
+                    return;
+                }
+                $('#items2').text(item);
+                newIn();
+                $('#items2').append('<span></span>');
+                //$('#items2 input:last').append(newXbutton());
+                /*
+                $('#items2 dd:last').append(newXbutton());
+                newDt();
+                newDd();
+                $('#submit-box2').val(''); 
+            } else {
+                $('#items2 dd:last span').text(item);
+            }
+            */  
+                $('#submit-box2').val(''); 
+            } else {
+                $('#items2 span:last').text(item);
+            }
+        })
+    };
+    
+    newIn();
     newLi();
-    newDt();
+    //newDt();
+    //newDd();    
     
     var newXbutton = function() {
         var x = $('<i class="fa fa-times"></i>');
@@ -56,43 +101,33 @@ $(document).ready(function () {
         $(this).toggleClass('crossout');
     })
     
-    $('#submit-box2').on('keyup', function(event) {
-        var item = $('#submit-box2').val();
-        console.log("1 item:", item);
-        if (event.which === 13) {
-            console.log("2 enter key");
-            event.preventDefault();
-            if (item.length === 0) {
-                console.log("false");
-                alert("Please type in an item!");
-                return;
-            }
-            $('#items2 dt:last').append(newXbutton());
-            newDt();
-            $('#submit-box2').val(''); 
-        } else {
-            $('#items2 dt:last span').text(item);
-        }    
-    })
-    
+    _keyup();
+    /*
     $('#add-category').on('keyup', function(event) {
-        var categoryItem = $('#add-category').val();
+        var newCategory = $(this).val();
+        //var categoryItem = $('#add-category').val();
         if (event.which === 13) {
             console.log("2 enter key");
             event.preventDefault();
-            if (categoryItem.length === 0) {
+            if (newCategory.length === 0) {
                 console.log("false");
                 alert("Please type in a category!");
                 return;
-            }         
+            }
+            var newOption = $('<option><span></span></option>');
+            newOption.attr('value', newCategory);
+            newOption.text(newCategory);
+            $('#category').append(newOption);
+            //$('#category span').text(newCategory);
             $('#items2 dt:last').append(newXbutton());
             newDt();
             $('#add-category').val('');
         } else {
-            $('#items2 dt:last span').text(categoryItem);
+            $('#items2 dt:last span').text(newCategory);
         }
     })
-    
+    */
+    /*
     var emptyShoppingList = function() {
         var trashShoppingList = $('#trash1');
         console.log(trashShoppingList);
@@ -111,4 +146,5 @@ $(document).ready(function () {
     }
     emptyShoppingList();
     emptyInventory();
+    */
 });
