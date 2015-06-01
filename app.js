@@ -14,14 +14,26 @@ $(document).ready(function () {
         $('#items2 dl').append('<dd><span></span></dd>');
     }
     */
-    var newIn = function() {
-      var item = $('<li></li>');
-      var editor = $('<input id="item-name" type="text" placeholder="Item...">')
-      item_input(editor);      
+    
+    var makeEditor = function(y) {
+      var editor = $('<input id="item-name" type="text" placeholder="Item...">');
+      editor.prop('value', y);
+      item_input(editor);   
+      return editor;
+    };
+    
+    var newItem = function() {
+      var item = $('<li></li>');  
+      var editor = makeEditor();
       item.append(editor);
       $('#items2').append(item);
-    }
+    };
     
+    var reAddEditor = function(event) {
+        var data = $(this).val();
+        alert('Hello!');
+    };
+  
     var item_input = function(editor) {
         editor.on('keyup', function(event) {
             var item = $(this).val();
@@ -36,13 +48,11 @@ $(document).ready(function () {
                 }
                 
                 var item_name = $('<h3></h3>');
-                item_name.on('click', function(event) {
-                  alert('hello!');
-                })
+                item_name.on('click', reAddEditor)
                 item_name.text(item);
                 //$('#items2').append(item_name);
                 $(this).replaceWith(item_name);
-                newIn();
+                newItem();
                 //$('#items2 input:last').append(newXbutton());
                 /*
                 $('#items2 dd:last').append(newXbutton());
@@ -60,7 +70,7 @@ $(document).ready(function () {
         })
     };
     
-    newIn();
+    newItem();
     newLi();
     //newDt();
     //newDd();    
