@@ -15,9 +15,9 @@ $(document).ready(function () {
     }
     */
     
-    var makeEditor = function(y) {
+    var makeEditor = function(data) {
       var editor = $('<input id="item-name" type="text" placeholder="Item...">');
-      editor.prop('value', y);
+      editor.prop('value', data);
       item_input(editor);   
       return editor;
     };
@@ -29,9 +29,10 @@ $(document).ready(function () {
       $('#items2').append(item);
     };
     
-    var reAddEditor = function(event) {
-        var data = $(this).val();
-        alert('Hello!');
+    var reAddEditor = function() {
+      var data = $(this).text();
+      var editor = makeEditor(data);
+      $(this).replaceWith(editor);
     };
   
     var item_input = function(editor) {
@@ -48,11 +49,11 @@ $(document).ready(function () {
                 }
                 
                 var item_name = $('<h3></h3>');
-                item_name.on('click', reAddEditor)
+                item_name.on('click', reAddEditor);
                 item_name.text(item);
                 //$('#items2').append(item_name);
                 $(this).replaceWith(item_name);
-                newItem();
+                //newItem();
                 //$('#items2 input:last').append(newXbutton());
                 /*
                 $('#items2 dd:last').append(newXbutton());
