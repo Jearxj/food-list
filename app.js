@@ -38,6 +38,10 @@ $(document).ready(function () {
     editor.focus();
   };
   
+  var staticName = function() {
+    return $('<h3></h3>');
+  };
+  
   var existingItemHandler = function(event) {
     var data = $(this).val();
       console.log("1 item:", data);
@@ -50,9 +54,8 @@ $(document).ready(function () {
           return;
         }
 
-        var item_name = $('<h3></h3>');
+        var item_name = staticName();
         item_name.on('click', reAddEditor);
-
         item_name.text(data);
         $(this).replaceWith(item_name);
         //$('#items2 input:last').append(newXbutton());
@@ -83,9 +86,8 @@ $(document).ready(function () {
         return;
       }
 
-      var item_name = $('<h3></h3>');
+      var item_name = staticName();
       item_name.on('click', reAddEditor);
-
       item_name.text(data);
       $(this).replaceWith(item_name);
       newItem();
