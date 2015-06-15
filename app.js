@@ -29,93 +29,62 @@ $(document).ready(function () {
     item.append(editor);
     $('#items2').append(item);
   };
-
-  var reAddEditor = function() {
-    var data = $(this).text();
-    var editor = makeEditor(data);
-    editor.on('keyup', existingItemHandler);
-    $(this).replaceWith(editor);
-    editor.focus();
-  };
   
-  var staticName = function() {
-    return $('<h3></h3>');
+  var staticName = function(data) { 
+    var display = $('<h3></h3>');
+    
+    //re-adds editor
+    display.on('click', function() {
+      var data = $(this).text();
+      var editor = makeEditor(data);
+      editor.on('keyup', existingItemHandler);
+      $(this).replaceWith(editor);
+      editor.focus();
+    });
+    
+    display.text(data);
+    display.append(newXbutton());
+    return display;
   };
   
   var existingItemHandler = function(event) {
+    if (event.which !== 13) {
+      return;
+    }
+    event.preventDefault();
     var data = $(this).val();
-      console.log("1 item:", data);
-      if (event.which === 13) {
-        console.log("2 enter key");
-        event.preventDefault();
-        if (data.length === 0) {
-          console.log("false");
-          alert("Please type in an item!");
-          return;
-        }
-
-        var item_name = staticName();
-        item_name.on('click', reAddEditor);
-        item_name.text(data);
-        $(this).replaceWith(item_name);
-        //$('#items2 input:last').append(newXbutton());
-        /*
-        $('#items2 dd:last').append(newXbutton());
-        newDt();
-        newDd();
-        $('#submit-box2').val(''); 
-      } else {
-          $('#items2 dd:last span').text(item);
-      }
-      */  
-          $('#item-name').val(''); 
-      } else {
-          $('#items2 h3:last').append(item_name);
-      }
+    if (data.length === 0) {
+      alert("Please type in an item!");
+      return;
+    }
+    
+    var item_name = staticName(data);
+    $(this).replaceWith(item_name);
   };
 
   var newItemHandler = function(event) {
+    if (event.which !== 13) {
+      return;
+    }
+    event.preventDefault();
     var data = $(this).val();
-    console.log("1 item:", data);
-    if (event.which === 13) {
-      console.log("2 enter key");
-      event.preventDefault();
-      if (data.length === 0) {
-        console.log("false");
-        alert("Please type in an item!");
-        return;
-      }
-
-      var item_name = staticName();
-      item_name.on('click', reAddEditor);
-      item_name.text(data);
-      $(this).replaceWith(item_name);
-      newItem();
-      //$('#items2 input:last').append(newXbutton());
-      /*
-      $('#items2 dd:last').append(newXbutton());
-      newDt();
-      newDd();
-      $('#submit-box2').val(''); 
-    } else {
-        $('#items2 dd:last span').text(item);
+    if (data.length === 0) {
+      alert("Please type in an item!");
+      return;
     }
-    */  
-        $('#item-name').val(''); 
-    } else {
-        $('#items2 h3:last').append(item_name);
-    }
+      
+    var item_name = staticName(data);
+    $(this).replaceWith(item_name);
+    newItem();
   };
     
   newItem();
-  newLi();
-  //newDt();
-  //newDd();    
+  newLi();  
 
   var newXbutton = function() {
     var x = $('<i class="fa fa-times"></i>');
     x.click(function() {          
-      $(this).parent().remove();
+      $(this).parent().parent().remove();
       console.log('6 remove');
     })
     return x;
