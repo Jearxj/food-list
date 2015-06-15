@@ -18,7 +18,6 @@ $(document).ready(function () {
   var makeEditor = function(data) {
     var editor = $('<input id="item-name" type="text" placeholder="Item...">');
     editor.prop('value', data);
-    editor.on('keyup', keyupHandler);
     return editor;
   };
   
@@ -26,6 +25,7 @@ $(document).ready(function () {
   var newItem = function() {
     var item = $('<li></li>');  
     var editor = makeEditor();
+    editor.on('keyup', newItemHandler);
     item.append(editor);
     $('#items2').append(item);
   };
@@ -33,11 +33,45 @@ $(document).ready(function () {
   var reAddEditor = function() {
     var data = $(this).text();
     var editor = makeEditor(data);
+    editor.on('keyup', existingItemHandler);
     $(this).replaceWith(editor);
     editor.focus();
   };
+  
+  var existingItemHandler = function(event) {
+    var data = $(this).val();
+      console.log("1 item:", data);
+      if (event.which === 13) {
+        console.log("2 enter key");
+        event.preventDefault();
+        if (data.length === 0) {
+          console.log("false");
+          alert("Please type in an item!");
+          return;
+        }
 
-  var keyupHandler = function(event) {
+        var item_name = $('<h3></h3>');
+        item_name.on('click', reAddEditor);
+
+        item_name.text(data);
+        $(this).replaceWith(item_name);
+        //$('#items2 input:last').append(newXbutton());
+        /*
+        $('#items2 dd:last').append(newXbutton());
+        newDt();
+        newDd();
+        $('#submit-box2').val(''); 
+      } else {
+          $('#items2 dd:last span').text(item);
+      }
+      */  
+          $('#item-name').val(''); 
+      } else {
+          $('#items2 h3:last').append(item_name);
+      }
+  };
+
+  var newItemHandler = function(event) {
     var data = $(this).val();
     console.log("1 item:", data);
     if (event.which === 13) {
