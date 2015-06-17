@@ -24,7 +24,7 @@ h1 {
     
 }
 
-.box-one {
+.shopping-list {
     position: relative;
     width: 500px;
     height: 500px;
@@ -34,7 +34,7 @@ h1 {
     box-sizing: border-box;
 }
 
-.box-two {
+.food-inventory {
     position: relative;
     width: 500px;
     height: 500px;

@@ -5,15 +5,7 @@ $(document).ready(function () {
   var newLi = function() {
     $('#items1 ol').append('<li><span></span></li>');
   };
-  /*
-  var newDt = function() {
-      $('#items2 dl').append('<dt><span></span></dt>');
-  };
-
-  var newDd = function() {
-      $('#items2 dl').append('<dd><span></span></dd>');
-  }
-  */
+  
   //makes a new editor
   var makeEditor = function(data) {
     var editor = $('<input id="item-name" type="text" placeholder="Item...">');
@@ -22,35 +14,41 @@ $(document).ready(function () {
   };
   
   
-  var newItem = function() {
+  var newItem = function(whichList, whichNewHandler) {
     var item = $('<li></li>');  
     var editor = makeEditor();
-    editor.on('keyup', newItemHandler);
+    editor.on('keyup', whichNewHandler);
     item.append(editor);
-    $('#items2').append(item);
+    $(whichList).append(item);
   };
   
-  var staticName = function(data) { 
+  var staticName = function(data, move, whichExistingHandler) { 
     var display = $('<h3></h3>');
     
+    display.text(data);
     //re-adds editor
     display.on('click', function() {
       var data = $(this).text();
       var editor = makeEditor(data);
-      editor.on('keyup', existingItemHandler);
+      editor.on('keyup', whichExistingHandler);
       $(this).replaceWith(editor);
       editor.focus();
     });
-    
-    display.text(data);
+
+    if (move) {
+      display.append(moveItem());
+    }
     display.append(newXbutton());
     return display;
   };
   
-  var existingItemHandler = function(event) {
+  var shoppingExistingHandler = function(event) {
     if (event.which !== 13) {
       return;
     }
+    
+    console.log('shopping existing handler working');
+    
     event.preventDefault();
     var data = $(this).val();
     if (data.length === 0) {
@@ -58,11 +56,46 @@ $(document).ready(function () {
       return;
     }
     
-    var item_name = staticName(data);
+    var item_name = staticName(data, true, shoppingExistingHandler);
     $(this).replaceWith(item_name);
   };
 
-  var newItemHandler = function(event) {
+  var inventoryExistingHandler = function(event) {
+    if (event.which !== 13) {
+      return;
+    }
+    
+    console.log('existing handler working');
+    event.preventDefault();
+    var data = $(this).val();
+    if (data.length === 0) {
+      alert("Please type in an item!");
+      return;
+    }
+
+    var item_name = staticName(data, false, inventoryExistingHandler);
+    $(this).replaceWith(item_name);
+  };
+  
+  var newShoppingHandler = function(event) {
+    if (event.which !== 13) {
+      return;
+    }
+    console.log('new handler working');
+    event.preventDefault();
+    var data = $(this).val();
+    if (data.length === 0) {
+      alert("Please type in an item!");
+      return;
+    }
+
+    //shopping-list   
+    newItem('#shopping-items', newShoppingHandler);
+    var item_name = staticName(data, true, shoppingExistingHandler); 
+    $(this).replaceWith(item_name);
+  };
+  
+  var newInventoryHandler = function(event) {
     if (event.which !== 13) {
       return;
     }
@@ -72,17 +105,19 @@ $(document).ready(function () {
       alert("Please type in an item!");
       return;
     }
-      
-    var item_name = staticName(data);
+    
+    //food-inventory
+    var item_name = staticName(data, false, inventoryExistingHandler);
     $(this).replaceWith(item_name);
-    newItem();
+    newItem('#inventory-items', newInventoryHandler);
   };
     
-  newItem();
-  newLi();  
+  newItem('#shopping-items', newShoppingHandler);
+  newItem('#inventory-items', newInventoryHandler);
 
   var newXbutton = function() {
     var x = $('<i class="fa fa-times"></i>');
+    
     x.click(function() {          
       $(this).parent().parent().remove();
       console.log('6 remove');
@@ -90,41 +125,20 @@ $(document).ready(function () {
     return x;
   };
 
-  $('#submit-box1').on('keyup', function(event) {
-    var item = $('#submit-box1').val();
-    console.log("1 item:", item);
-    if (event.which === 13) {
-      console.log("2 enter key");
-      event.preventDefault();
-      if (item.length >= 1) {
-        console.log("3 true");
-        var rightArrow = $('<i class="fa fa-arrow-right"></i>');
-        //var xButton = newXbutton();
-        $('#items1 li:last').append(rightArrow, newXbutton());
+  var moveItem = function() {
+    var rightArrow = $('<i class="fa fa-arrow-right"></i>');
+    
+    rightArrow.click(function() {
+        var content = $(this).parent().text();
+        console.log('8 content:', content);
+        var move = $('#inventory-items li:last span').text(content);
+        console.log('9 move right:', move);
+        var addX = $('#inventory-items li:last').append(newXbutton());
+        console.log('10 append x:', addX);
         newLi();
-        console.log('4 newli');
-        rightArrow.click(function() {
-          var content = $(this).parent().text();
-          console.log('8 content:', content);
-          var move = $('#items2 dt:last span').text(content);
-          console.log('9 move right:', move);
-          var addX = $('#items2 dt:last').append(newXbutton());
-          console.log('10 append x:', addX);
-          newDt();
-        })
-        $('#submit-box1').val('');
-      } else {
-          console.log("false");
-          alert("Please type in an item!");
-      }
-    } else {
-        $('#items1 li:last span').text(item);
-    }
-  })
-
-  $('#items1').on('click', 'li span', function() {
-      $(this).toggleClass('crossout');
-  })
+      })
+    return rightArrow;
+  };
 
   /*
   $('#add-category').on('keyup', function(event) {
