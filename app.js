@@ -2,10 +2,6 @@ $(document).ready(function () {
   $( "form" ).submit(function( event ) {
   event.preventDefault();
   })
-  //Fix this
-  var newLi = function() {
-    $('#items1 ol').append('<li><span></span></li>');
-  };
   
   //transforms data into editor
   var makeEditor = function(data) {
@@ -38,8 +34,9 @@ $(document).ready(function () {
   };
   
   var setLocation = function(displayOrEditor, location) {
+    displayOrEditor.removeClass('shopping-list inventory-list');
     displayOrEditor.addClass(location);
-  }
+  };
   
   var displayToData = function(display) {
     var name = display.text();
@@ -75,7 +72,7 @@ $(document).ready(function () {
     setLocation(display, location);
     display.text(name);
     if (move) {
-      display.append(moveItem());
+      display.append(makeArrow());
     }
     display.append(newXbutton());
     return display;
@@ -113,77 +110,7 @@ $(document).ready(function () {
       editor.replaceWith(display);
     }
   };
-  /*
-  var shoppingExistingHandler = function(event) {
-    if (event.which !== 13) {
-      return;
-    }
-    
-    console.log('shopping existing handler working');
-    
-    event.preventDefault();
-    var data = $(this).val();
-    if (data.length === 0) {
-      alert("Please type in an item!");
-      return;
-    }
-    
-    var item_name = staticName(data, true, shoppingExistingHandler);
-    $(this).replaceWith(item_name);
-  };
 
-  var inventoryExistingHandler = function(event) {
-    if (event.which !== 13) {
-      return;
-    }
-    
-    console.log('existing handler working');
-    event.preventDefault();
-    var data = $(this).val();
-    if (data.length === 0) {
-      alert("Please type in an item!");
-      return;
-    }
-
-    var item_name = staticName(data, false, inventoryExistingHandler);
-    $(this).replaceWith(item_name);
-  };
-  
-  var newShoppingHandler = function(event) {
-    if (event.which !== 13) {
-      return;
-    }
-    console.log('new handler working');
-    event.preventDefault();
-    var data = $(this).val();
-    if (data.length === 0) {
-      alert("Please type in an item!");
-      return;
-    }
-
-    //shopping-list   
-    newItem('#shopping-items', newShoppingHandler);
-    var item_name = staticName(data, true, shoppingExistingHandler); 
-    $(this).replaceWith(item_name);
-  };
-  
-  var newInventoryHandler = function(event) {
-    if (event.which !== 13) {
-      return;
-    }
-    event.preventDefault();
-    var data = $(this).val();
-    if (data.length === 0) {
-      alert("Please type in an item!");
-      return;
-    }
-    
-    //inventory-list
-    var item_name = staticName(data, false, inventoryExistingHandler);
-    $(this).replaceWith(item_name);
-    newItem('#inventory-items', newInventoryHandler);
-  };
-  */  
   newItem('shopping-list');
   newItem('inventory-list');
 
@@ -197,64 +124,19 @@ $(document).ready(function () {
     return x;
   };
 
-  var moveItem = function() {
+  var makeArrow = function() {
     var rightArrow = $('<i class="fa fa-arrow-right"></i>');
     
     rightArrow.click(function() {
-        var data = displayToData($(this).parent());
-        console.log('8 content:', data);
-        var move = $('#inventory-list li:last span').text(data);
-        console.log('9 move right:', move);
-        var addX = $('#inventory-list li:last').append(newXbutton());
-        console.log('10 append x:', addX);
-        newLi();
-      })
+      var oldDisplay = $(this).parent();
+      var location = 'inventory-list';
+      setLocation(oldDisplay, location);
+      var data = displayToData(oldDisplay);
+      var newDisplay = dataToDisplay(data, false);
+      oldDisplay.replaceWith(newDisplay);
+      var item = newDisplay.parent();
+      item.detach().prependTo($('#inventory-list'));
+    })
     return rightArrow;
   };
-
-  /*
-  $('#add-category').on('keyup', function(event) {
-      var newCategory = $(this).val();
-      //var categoryItem = $('#add-category').val();
-      if (event.which === 13) {
-          console.log("2 enter key");
-          event.preventDefault();
-          if (newCategory.length === 0) {
-              console.log("false");
-              alert("Please type in a category!");
-              return;
-          }
-          var newOption = $('<option><span></span></option>');
-          newOption.attr('value', newCategory);
-          newOption.text(newCategory);
-          $('#category').append(newOption);
-          //$('#category span').text(newCategory);
-          $('#items2 dt:last').append(newXbutton());
-          newDt();
-          $('#add-category').val('');
-      } else {
-          $('#items2 dt:last span').text(newCategory);
-      }
-  })
-  */
-  /*
-  var emptyShoppingList = function() {
-      var trashShoppingList = $('#trash1');
-      console.log(trashShoppingList);
-      trashShoppingList.click(function() {
-          $('#items1 ol').empty();
-          newLi();
-      });
-  }
-  var emptyInventory = function() {
-      var trashInventory = $('#trash2');
-      console.log(trashInventory);
-      trashInventory.click(function() {
-          $('#items2 dl').empty();
-          newDt();
-      });
-  }
-  emptyShoppingList();
-  emptyInventory();
-  */
 });
