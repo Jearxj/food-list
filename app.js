@@ -7,7 +7,10 @@ $(document).ready(function () {
   var makeEditor = function(data) {
     var mainEditor = $('<div></div>');
     var headerEditor = $('<input id="item-name" type="text" placeholder="Item...">');
-    mainEditor.append(headerEditor);
+    var tagsLabel = $('<i class="fa fa-tags"></i>');
+    var plusLabel = $('<button class="fa fa-plus">');
+    
+    mainEditor.append(headerEditor, tagsLabel, plusLabel);
     headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
       mainEditor.addClass('newHandler');

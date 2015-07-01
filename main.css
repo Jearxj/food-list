@@ -186,3 +186,7 @@ dt {
 #topBoxOne {
     text-align: center;
 }
+
+button {
+  background-color: white;
+}
