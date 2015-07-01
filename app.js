@@ -5,14 +5,16 @@ $(document).ready(function () {
   
   //transforms data into editor
   var makeEditor = function(data) {
-    var editor = $('<input id="item-name" type="text" placeholder="Item...">');
-    editor.on('keyup', oneGiantHandler);
+    var mainEditor = $('<div></div>');
+    var headerEditor = $('<input id="item-name" type="text" placeholder="Item...">');
+    mainEditor.append(headerEditor);
+    headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
-      editor.addClass('newHandler');
+      mainEditor.addClass('newHandler');
     } else {
-      editor.prop('value', data.name);
+      headerEditor.prop('value', data.header);
     }
-    return editor;
+    return mainEditor;
   };
   
   var newItem = function(location) {
@@ -39,17 +41,18 @@ $(document).ready(function () {
   };
   
   var displayToData = function(display) {
-    var name = display.text();
+    var header = display.text();
     var location = getLocation(display);
-    var data = {name: name,
+    var data = {header: header,
                location: location};
     return data;
   };
   
-  var editorToData = function(editor) {
-    var name = editor.val();
-    var location = getLocation(editor);
-    var data = {name: name,
+  var editorToData = function(mainEditor) {
+    var headerEditor = $(mainEditor.children()[0]);
+    var header = headerEditor.val();
+    var location = getLocation(mainEditor);
+    var data = {header: header,
                location: location};
     return data;
   };
@@ -67,10 +70,10 @@ $(document).ready(function () {
       editor.focus();
     });
     
-    var name = data.name;
+    var header = data.header;
     var location = data.location;
     setLocation(display, location);
-    display.text(name);
+    display.text(header);
     if (move) {
       display.append(makeArrow());
     }
@@ -86,28 +89,29 @@ $(document).ready(function () {
     console.log('handler working');
     
     event.preventDefault();
-    var editor = $(this);
-    var data = editorToData(editor);
-    if (data.name.length === 0) {
+    var headerEditor = $(this);
+    var mainEditor = headerEditor.parent();
+    var data = editorToData(mainEditor);
+    if (data.header.length === 0) {
       alert("Please type in an item!");
       return;
     }    
-    console.log('editor working:', editor);
-    if (editor.hasClass("shopping-list")) {
-      if (editor.hasClass("newHandler")) {
+
+    if (mainEditor.hasClass("shopping-list")) {
+      if (mainEditor.hasClass("newHandler")) {
         newItem('shopping-list', oneGiantHandler);
       } 
       var display = dataToDisplay(data, true);
-      editor.replaceWith(display);
+      mainEditor.replaceWith(display);
     }
     
         
-    if (editor.hasClass("inventory-list")) {
-      if (editor.hasClass("newHandler")) {
+    if (mainEditor.hasClass("inventory-list")) {
+      if (mainEditor.hasClass("newHandler")) {
         newItem('inventory-list', oneGiantHandler);
       }
       var display = dataToDisplay(data, false);
-      editor.replaceWith(display);
+      mainEditor.replaceWith(display);
     }
   };
 
