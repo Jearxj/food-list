@@ -2,39 +2,78 @@ $(document).ready(function () {
   $( "form" ).submit(function( event ) {
   event.preventDefault();
   })
+  //Fix this
   var newLi = function() {
     $('#items1 ol').append('<li><span></span></li>');
   };
   
-  //makes a new editor
+  //transforms data into editor
   var makeEditor = function(data) {
     var editor = $('<input id="item-name" type="text" placeholder="Item...">');
-    editor.prop('value', data);
+    editor.on('keyup', oneGiantHandler);
+    if (data === undefined) {
+      editor.addClass('newHandler');
+    } else {
+      editor.prop('value', data.name);
+    }
     return editor;
   };
   
-  
-  var newItem = function(whichList, whichNewHandler) {
+  var newItem = function(location) {
     var item = $('<li></li>');  
     var editor = makeEditor();
-    editor.on('keyup', whichNewHandler);
+    setLocation(editor, location);
     item.append(editor);
-    $(whichList).append(item);
+    $('#' + location).append(item);
   };
   
-  var staticName = function(data, move, whichExistingHandler) { 
+  var getLocation = function(displayOrEditor) {
+    var location;
+    if (displayOrEditor.hasClass('shopping-list')) {
+      location = 'shopping-list'; 
+    } else {
+      location = 'inventory-list';
+    }
+    return location;
+  };
+  
+  var setLocation = function(displayOrEditor, location) {
+    displayOrEditor.addClass(location);
+  }
+  
+  var displayToData = function(display) {
+    var name = display.text();
+    var location = getLocation(display);
+    var data = {name: name,
+               location: location};
+    return data;
+  };
+  
+  var editorToData = function(editor) {
+    var name = editor.val();
+    var location = getLocation(editor);
+    var data = {name: name,
+               location: location};
+    return data;
+  };
+  
+  var dataToDisplay = function(data, move) { 
     var display = $('<h3></h3>');
     
-    display.text(data);
     //re-adds editor
     display.on('click', function() {
-      var data = $(this).text();
+      var data = displayToData($(this));
       var editor = makeEditor(data);
-      editor.on('keyup', whichExistingHandler);
+      var location = getLocation($(this));
+      setLocation(editor, location);
       $(this).replaceWith(editor);
       editor.focus();
     });
-
+    
+    var name = data.name;
+    var location = data.location;
+    setLocation(display, location);
+    display.text(name);
     if (move) {
       display.append(moveItem());
     }
@@ -42,6 +81,39 @@ $(document).ready(function () {
     return display;
   };
   
+  var oneGiantHandler = function(event) {
+    if (event.which !== 13) {
+      return;
+    }
+    
+    console.log('handler working');
+    
+    event.preventDefault();
+    var editor = $(this);
+    var data = editorToData(editor);
+    if (data.name.length === 0) {
+      alert("Please type in an item!");
+      return;
+    }    
+    console.log('editor working:', editor);
+    if (editor.hasClass("shopping-list")) {
+      if (editor.hasClass("newHandler")) {
+        newItem('shopping-list', oneGiantHandler);
+      } 
+      var display = dataToDisplay(data, true);
+      editor.replaceWith(display);
+    }
+    
+        
+    if (editor.hasClass("inventory-list")) {
+      if (editor.hasClass("newHandler")) {
+        newItem('inventory-list', oneGiantHandler);
+      }
+      var display = dataToDisplay(data, false);
+      editor.replaceWith(display);
+    }
+  };
+  /*
   var shoppingExistingHandler = function(event) {
     if (event.which !== 13) {
       return;
@@ -106,14 +178,14 @@ $(document).ready(function () {
       return;
     }
     
-    //food-inventory
+    //inventory-list
     var item_name = staticName(data, false, inventoryExistingHandler);
     $(this).replaceWith(item_name);
     newItem('#inventory-items', newInventoryHandler);
   };
-    
-  newItem('#shopping-items', newShoppingHandler);
-  newItem('#inventory-items', newInventoryHandler);
+  */  
+  newItem('shopping-list');
+  newItem('inventory-list');
 
   var newXbutton = function() {
     var x = $('<i class="fa fa-times"></i>');
@@ -129,11 +201,11 @@ $(document).ready(function () {
     var rightArrow = $('<i class="fa fa-arrow-right"></i>');
     
     rightArrow.click(function() {
-        var content = $(this).parent().text();
-        console.log('8 content:', content);
-        var move = $('#inventory-items li:last span').text(content);
+        var data = displayToData($(this).parent());
+        console.log('8 content:', data);
+        var move = $('#inventory-list li:last span').text(data);
         console.log('9 move right:', move);
-        var addX = $('#inventory-items li:last').append(newXbutton());
+        var addX = $('#inventory-list li:last').append(newXbutton());
         console.log('10 append x:', addX);
         newLi();
       })
