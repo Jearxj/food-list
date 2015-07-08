@@ -3,20 +3,44 @@ $(document).ready(function () {
   event.preventDefault();
   })
   
-  //transforms data into editor
+  var addTagEditor = function() {
+    var tagEditor = makeTagEditor();
+    tagEditor.insertBefore($(this));
+    tagEditor.focus();
+  };
+  
+  var makeTagEditor = function(tagData) {
+    var tagEditor = $('<input class="tag-name" type="text" placeholder="Tag...">');
+    
+    if (tagData !== undefined) {
+      tagEditor.val(tagData);
+    }
+    
+    tagEditor.on('keyup', oneGiantHandler);
+    return tagEditor;
+  }
+    
+  //data to editor
   var makeEditor = function(data) {
     var mainEditor = $('<div></div>');
-    var headerEditor = $('<input id="item-name" type="text" placeholder="Item...">');
+    var headerEditor = $('<input class="item-name" type="text" placeholder="Item...">');
     var tagsLabel = $('<i class="fa fa-tags"></i>');
-    var plusLabel = $('<button class="fa fa-plus">');
+    var plusButton = $('<button class="fa fa-plus">');
     
-    mainEditor.append(headerEditor, tagsLabel, plusLabel);
+    plusButton.on('click', addTagEditor);
+    
+    mainEditor.append(headerEditor, tagsLabel)
     headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
       mainEditor.addClass('newHandler');
     } else {
       headerEditor.prop('value', data.header);
+      for (var i = 0; i < data.tags.length; i++) {
+        var tagEditor = makeTagEditor(data.tags[i]);
+        mainEditor.append(tagEditor);
+      }
     }
+    mainEditor.append(plusButton);
     return mainEditor;
   };
   
@@ -43,45 +67,73 @@ $(document).ready(function () {
     displayOrEditor.addClass(location);
   };
   
-  var displayToData = function(display) {
-    var header = display.text();
-    var location = getLocation(display);
-    var data = {header: header,
-               location: location};
+  var displayToData = function(wholeDisplay) {
+    var tagDisplays = wholeDisplay.children('.tag-name');
+    console.log('tagDisplays: ', tagDisplays);
+    var header = $(wholeDisplay.children()[0]).text();
+    var location = getLocation(wholeDisplay);
+    var tags = [];
+      for (var i = 0; i < tagDisplays.length; i++) {
+      tags.push($(tagDisplays[i]).text());
+    }
+    var data = {
+      tags: tags,
+      header: header,
+      location: location
+    };
     return data;
   };
   
   var editorToData = function(mainEditor) {
+    var tagEditors = mainEditor.children('.tag-name');
     var headerEditor = $(mainEditor.children()[0]);
     var header = headerEditor.val();
     var location = getLocation(mainEditor);
-    var data = {header: header,
-               location: location};
+    var tags = [];
+    for (var i = 0; i < tagEditors.length; i++) {
+      tags.push($(tagEditors[i]).val());
+    }
+    var data = {
+      tags: tags,
+      header: header,
+      location: location
+    };
     return data;
   };
   
+  var startEditing = function() {
+    var data = displayToData($(this));
+    var editor = makeEditor(data);
+    var location = getLocation($(this));
+    setLocation(editor, location);
+    $(this).replaceWith(editor);
+    editor.focus();
+  } 
+  
   var dataToDisplay = function(data, move) { 
-    var display = $('<h3></h3>');
+    var wholeDisplay = $('<div></div>');
+    var headerDisplay = $('<h3></h3>');
     
-    //re-adds editor
-    display.on('click', function() {
-      var data = displayToData($(this));
-      var editor = makeEditor(data);
-      var location = getLocation($(this));
-      setLocation(editor, location);
-      $(this).replaceWith(editor);
-      editor.focus();
-    });
+    wholeDisplay.append(headerDisplay);
+    for (var i = 0; i < data.tags.length; i++) {
+      var tagDisplay = $('<span class="tag-name"></span>');
+      tagDisplay.text(data.tags[i]);
+      wholeDisplay.append(tagDisplay);
+      if (i !== data.tags.length - 1) {
+        wholeDisplay.append(', ');
+      }
+    }
     
+    wholeDisplay.on('click', startEditing);
     var header = data.header;
     var location = data.location;
-    setLocation(display, location);
-    display.text(header);
+    setLocation(wholeDisplay, location);
+    headerDisplay.text(header);
     if (move) {
-      display.append(makeArrow());
+      headerDisplay.append(makeArrow());
     }
-    display.append(newXbutton());
-    return display;
+    headerDisplay.append(newXbutton());
+    return wholeDisplay;
   };
   
   var oneGiantHandler = function(event) {
@@ -125,7 +177,7 @@ $(document).ready(function () {
     var x = $('<i class="fa fa-times"></i>');
     
     x.click(function() {          
-      $(this).parent().parent().remove();
+      $(this).parent().parent().parent().remove();
       console.log('6 remove');
     })
     return x;
@@ -135,7 +187,7 @@ $(document).ready(function () {
     var rightArrow = $('<i class="fa fa-arrow-right"></i>');
     
     rightArrow.click(function() {
-      var oldDisplay = $(this).parent();
+      var oldDisplay = $(this).parent().parent();
       var location = 'inventory-list';
       setLocation(oldDisplay, location);
       var data = displayToData(oldDisplay);
