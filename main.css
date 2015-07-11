@@ -25,6 +25,7 @@ h1 {
 }
 
 .shopping {
+    text-align: center;
     position: relative;
     width: 500px;
     height: 500px;
@@ -35,6 +36,7 @@ h1 {
 }
 
 .inventory {
+    text-align: center;
     position: relative;
     width: 500px;
     height: 500px;
@@ -189,4 +191,17 @@ dt {
 
 button {
   background-color: white;
+}
+
+.search-field {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 350px;
+    padding: 4px;
+    font-family: 'Electrolize', sans-serif;
+    font-size: 15px;
+    /*background-color: #B8B8B8;*/
+    border: 2px solid black;
 }
