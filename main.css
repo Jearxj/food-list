@@ -46,24 +46,11 @@ h1 {
     box-sizing: border-box;
 }
 
-#submit-box1 {
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 350px;
-    padding: 4px;
-    font-family: 'Electrolize', sans-serif;
-    font-size: 15px;
-    /*background-color: #B8B8B8;*/
-    border: 2px solid black;
-}
-
 .item-name {
     margin: 0 auto;
     margin-top: 20px;
     text-align: center;
-    width: 350px;
+    width: 330px;
     padding: 4px;
     font-family: 'Electrolize', sans-serif;
     font-size: 15px;
@@ -134,14 +121,6 @@ ol {
     padding-left: 20px;
 }
 
-.crossout {
-    text-decoration: line-through;
-}
-
-.fa-trash:hover {
-    cursor: default;
-}
-
 .fa-times {
     float: right;
 }
@@ -152,37 +131,6 @@ ol {
 
 li:last-child {
     list-style: none;
-}
-
-#add-category {
-    display: inline-block;
-    margin: 0 auto;
-    padding: 4px;
-    width: 180px;
-    border: 2px solid gray;
-    border-radius: 5px;
-    font-family: 'Electrolize', sans-serif;
-    font-size: 15px;
-    box-sizing: border-box;
-}
-
-dt {
-    font-weight: bold;
-}
-
-.forms {
-    text-align: center;
-}
-
-#category {
-    margin: 0 auto;
-    border: 2px solid gray;
-    border-radius: 5px;
-    padding: 3px;
-    width: 180px;
-    font-family: 'Electrolize', sans-serif;
-    font-size: 15px;
-    box-sizing: border-box;
 }
 
 #topBoxOne {
@@ -204,4 +152,12 @@ button {
     font-size: 15px;
     /*background-color: #B8B8B8;*/
     border: 2px solid black;
+}
+
+.shopping-list {
+  text-align: left;
+}
+
+.inventory-list {
+  text-align: left;
 }

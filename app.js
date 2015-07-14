@@ -3,6 +3,14 @@ $(document).ready(function () {
   event.preventDefault();
   })
   
+    
+  $('.search-field').on('keyup', function() {
+    var query = $(this).val();
+    //search for the item
+    //highlight the item
+    //hide the rest
+  });
+
   var addTagEditor = function() {
     var tagEditor = makeTagEditor();
     tagEditor.insertBefore($(this));
