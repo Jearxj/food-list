@@ -29,15 +29,16 @@ $(document).ready(function () {
   }
     
   //data to editor
-  var makeEditor = function(data) {
+  var makeMainEditor = function(data) {
     var mainEditor = $('<div></div>');
     var headerEditor = $('<input class="item-name" type="text" placeholder="Item...">');
     var tagsLabel = $('<i class="fa fa-tags"></i>');
-    var plusButton = $('<button class="fa fa-plus">');
+    var plusTagButton = $('<button class="fa fa-plus">');
     
-    plusButton.on('click', addTagEditor);
+    plusTagButton.on('click', addTagEditor);
     
-    mainEditor.append(headerEditor, tagsLabel)
+    mainEditor.on('focusout', mainEditorFocusout);
+    mainEditor.append(headerEditor, tagsLabel);
     headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
       mainEditor.addClass('newHandler');
@@ -48,16 +49,70 @@ $(document).ready(function () {
         mainEditor.append(tagEditor);
       }
     }
-    mainEditor.append(plusButton);
+    mainEditor.append(plusTagButton);
     return mainEditor;
   };
   
+  //main editor blur handler
+  var mainEditorFocusout = function() {
+    var mainEditor = $(this); 
+    if (!$.contains(mainEditor[0], document.activeElement)) {
+      return;
+        }
+    console.log('main editor blur getting run');
+
+    isEmpty(mainEditor);
+  };
+  
+  
+  var isEmpty = function(mainEditor) {
+    
+    if (mainEditor.children('.item-name').val() === '') {
+      mainEditor.parent().remove();
+      console.log('empty editor getting run');
+      return;
+    }
+
+    var data = editorToData(mainEditor);
+    
+    if (mainEditor.hasClass("shopping-list")) {
+      if (mainEditor.hasClass("newHandler")) {
+        newItem('shopping-list', oneGiantHandler);
+      } 
+      var display = dataToDisplay(data, true);
+      mainEditor.replaceWith(display);
+    }
+    
+    if (mainEditor.hasClass("inventory-list")) {
+      if (mainEditor.hasClass("newHandler")) {
+        newItem('inventory-list', oneGiantHandler);
+      }
+      var display = dataToDisplay(data, false);
+      mainEditor.replaceWith(display);
+    }  
+  };
+  
+
+  
+  var editorFocus = function(editor) {
+    editor.children('.item-name').focus();
+  };
+  
+  $('.newShoppingItemButton').on('click', function() {
+    newItem('shopping-list');
+  });
+  
+    $('.newInventoryItemButton').on('click', function() {
+    newItem('inventory-list');
+  });
+  
   var newItem = function(location) {
-    var item = $('<li></li>');  
-    var editor = makeEditor();
-    setLocation(editor, location);
-    item.append(editor);
-    $('#' + location).append(item);
+      var item = $('<li></li>');  
+      var editor = makeMainEditor();
+      setLocation(editor, location);
+      item.append(editor);
+      $('#' + location).append(item);
+      editorFocus(editor);
   };
   
   var getLocation = function(displayOrEditor) {
@@ -111,12 +166,12 @@ $(document).ready(function () {
   
   var startEditing = function() {
     var data = displayToData($(this));
-    var editor = makeEditor(data);
+    var editor = makeMainEditor(data);
     var location = getLocation($(this));
     setLocation(editor, location);
     $(this).replaceWith(editor);
-    editor.focus();
-  } 
+    editorFocus(editor);
+  } ;
   
   var dataToDisplay = function(data, move) { 
     var wholeDisplay = $('<div></div>');
@@ -153,33 +208,10 @@ $(document).ready(function () {
     
     event.preventDefault();
     var headerEditor = $(this);
-    var mainEditor = headerEditor.parent();
-    var data = editorToData(mainEditor);
-    if (data.header.length === 0) {
-      alert("Please type in an item!");
-      return;
-    }    
-
-    if (mainEditor.hasClass("shopping-list")) {
-      if (mainEditor.hasClass("newHandler")) {
-        newItem('shopping-list', oneGiantHandler);
-      } 
-      var display = dataToDisplay(data, true);
-      mainEditor.replaceWith(display);
-    }
+    var mainEditor = headerEditor.parent();   
     
-        
-    if (mainEditor.hasClass("inventory-list")) {
-      if (mainEditor.hasClass("newHandler")) {
-        newItem('inventory-list', oneGiantHandler);
-      }
-      var display = dataToDisplay(data, false);
-      mainEditor.replaceWith(display);
-    }
+    isEmpty(mainEditor);
   };
-
-  newItem('shopping-list');
-  newItem('inventory-list');
 
   var newXbutton = function() {
     var x = $('<i class="fa fa-times"></i>');
