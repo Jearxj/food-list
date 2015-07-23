@@ -30,18 +30,17 @@ $(document).ready(function () {
     
   //data to editor
   var makeMainEditor = function(data) {
-    var mainEditor = $('<div></div>');
+    var mainEditor = $('<div class="main-editor"></div>');
     var headerEditor = $('<input class="item-name" type="text" placeholder="Item...">');
     var tagsLabel = $('<i class="fa fa-tags"></i>');
     var plusTagButton = $('<button class="fa fa-plus">');
     
     plusTagButton.on('click', addTagEditor);
     
-    mainEditor.on('focusout', mainEditorFocusout);
     mainEditor.append(headerEditor, tagsLabel);
     headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
-      mainEditor.addClass('newHandler');
+      mainEditor.addClass('newHandler');          
     } else {
       headerEditor.prop('value', data.header);
       for (var i = 0; i < data.tags.length; i++) {
@@ -53,56 +52,45 @@ $(document).ready(function () {
     return mainEditor;
   };
   
-  //main editor blur handler
-  var mainEditorFocusout = function() {
-    var mainEditor = $(this); 
-    if (!$.contains(mainEditor[0], document.activeElement)) {
-      return;
-        }
-    console.log('main editor blur getting run');
-
-    isEmpty(mainEditor);
+  //save all editors then make a new editor
+  var saveThenMakeEditor = function(data) {
+    saveAllEditors();
+    makeMainEditor(data);
   };
-  
-  
-  var isEmpty = function(mainEditor) {
+      
+  var saveAllEditors = function() {
     
-    if (mainEditor.children('.item-name').val() === '') {
-      mainEditor.parent().remove();
-      console.log('empty editor getting run');
-      return;
-    }
-
-    var data = editorToData(mainEditor);
+    var mainEditors = $('.main-editor');
     
-    if (mainEditor.hasClass("shopping-list")) {
-      if (mainEditor.hasClass("newHandler")) {
-        newItem('shopping-list', oneGiantHandler);
-      } 
-      var display = dataToDisplay(data, true);
-      mainEditor.replaceWith(display);
-    }
-    
-    if (mainEditor.hasClass("inventory-list")) {
-      if (mainEditor.hasClass("newHandler")) {
-        newItem('inventory-list', oneGiantHandler);
+    mainEditors.each(function(i, mainEditor) {
+      mainEditor = $(mainEditor);
+      //empty check
+      if (mainEditor.children('.item-name').val() === '') {
+        mainEditor.parent().remove();
+        console.log('empty editor getting run');
+        return;
       }
-      var display = dataToDisplay(data, false);
-      mainEditor.replaceWith(display);
-    }  
-  };
-  
+      //editor to display
+      var data = editorToData(mainEditor);
+      //the other class is inventory-list, which would set moveArrow to false
+      var moveArrow = mainEditor.hasClass("shopping-list"); 
 
+      var display = dataToDisplay(data, moveArrow);
+      mainEditor.replaceWith(display); 
+    });
+  };
   
   var editorFocus = function(editor) {
     editor.children('.item-name').focus();
   };
   
   $('.newShoppingItemButton').on('click', function() {
+    saveAllEditors();
     newItem('shopping-list');
   });
   
     $('.newInventoryItemButton').on('click', function() {
+    saveAllEditors();
     newItem('inventory-list');
   });
   
@@ -165,6 +153,7 @@ $(document).ready(function () {
   };
   
   var startEditing = function() {
+    saveAllEditors();
     var data = displayToData($(this));
     var editor = makeMainEditor(data);
     var location = getLocation($(this));
@@ -210,7 +199,13 @@ $(document).ready(function () {
     var headerEditor = $(this);
     var mainEditor = headerEditor.parent();   
     
-    isEmpty(mainEditor);
+    saveAllEditors();
+    
+    if (mainEditor.hasClass("newHandler")) {
+      var isShoppingList = mainEditor.hasClass('shopping-list');
+      var whichList = isShoppingList ? 'shopping-list': 'inventory-list';
+      newItem(whichList);
+    }
   };
 
   var newXbutton = function() {
