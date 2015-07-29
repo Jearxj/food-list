@@ -57,7 +57,11 @@ $(document).ready(function () {
     saveAllEditors();
     makeMainEditor(data);
   };
-      
+  
+  $('.search-field').focusin(function() {
+    saveAllEditors();
+  })
+  
   var saveAllEditors = function() {
     
     var mainEditors = $('.main-editor');
