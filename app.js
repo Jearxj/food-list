@@ -2,14 +2,6 @@ $(document).ready(function () {
   $( "form" ).submit(function( event ) {
   event.preventDefault();
   })
-  
-    
-  $('.search-field').on('keyup', function() {
-    var query = $(this).val();
-    //search for the item
-    //highlight the item
-    //hide the rest
-  });
 
   var addTagEditor = function() {
     var tagEditor = makeTagEditor();
@@ -61,6 +53,34 @@ $(document).ready(function () {
   $('.search-field').focusin(function() {
     saveAllEditors();
   })
+  
+  var searching = function(whichList) {
+    //field refers to any of the fields in the item, including headers and tags
+    var prefixMatchField = function(query, field) {
+      console.log("prefixMatchField:", prefixMatchField);
+      if (query.length > field.length) {
+        return false;
+      }
+      for (var i = 0; i < query.length; i++) {
+        if (query[i] !== field[i]) {
+            return false;
+        }
+      }
+      return true;
+    }
+    
+    var prefixMatchItem = function(query, item) {
+      var fields = item.find('.searchable');
+      for (var i = 0; i < fields.length; i++) {
+        var textField = $(fields[i]).text();
+        console.log('1:', textField);
+        if (prefixMatchField(query, textField)) { 
+          return true;
+        }
+      }
+      return false;
+    } 
+  };
   
   var saveAllEditors = function() {
     
@@ -168,11 +188,11 @@ $(document).ready(function () {
   
   var dataToDisplay = function(data, move) { 
     var wholeDisplay = $('<div></div>');
-    var headerDisplay = $('<h3></h3>');
+    var headerDisplay = $('<h3 class="searchable"></h3>');
     
     wholeDisplay.append(headerDisplay);
     for (var i = 0; i < data.tags.length; i++) {
-      var tagDisplay = $('<span class="tag-name"></span>');
+      var tagDisplay = $('<span class="tag-name searchable"></span>');
       tagDisplay.text(data.tags[i]);
       wholeDisplay.append(tagDisplay);
       if (i !== data.tags.length - 1) {
