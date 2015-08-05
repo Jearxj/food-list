@@ -54,7 +54,9 @@ $(document).ready(function () {
     saveAllEditors();
   })
   
-  var searching = function(whichList) {
+  $('.search-field').on('keyup', function() {
+    var $this = $(this);
+    console.log('parent of this:', $this.parent());
     //field refers to any of the fields in the item, including headers and tags
     var prefixMatchField = function(query, field) {
       console.log("prefixMatchField:", prefixMatchField);
@@ -73,14 +75,30 @@ $(document).ready(function () {
       var fields = item.find('.searchable');
       for (var i = 0; i < fields.length; i++) {
         var textField = $(fields[i]).text();
-        console.log('1:', textField);
         if (prefixMatchField(query, textField)) { 
           return true;
         }
       }
       return false;
     } 
-  };
+    //hide search items if query does not match
+    var hideOrShow = function(query, items) {
+      for (var i = 0; i < items.length; i++) {
+        var item = $(items[i]);
+        if (prefixMatchItem(query, item)) {
+          item.show();
+        } else {
+          item.hide();
+        }
+      }
+    }
+    
+    var query = $this.val();
+    var items = $this.parent().find('li');
+    
+    hideOrShow(query, items);
+    
+    });
   
   var saveAllEditors = function() {
     
