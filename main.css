@@ -1,73 +1,76 @@
+/*
 * {
     border: 1px dashed blue;
+}
+*/
+
+body {
+    margin: auto;
+    padding: 20px;
+    height: 100%;
 }
 
 h1 {
     font-family: Tahoma;
+    margin: auto;
     text-align: center;
-    margin: 20px auto;
 }
 
-#top-labels {
-    list-style-type: none;
-    text-align: center;
-    margin: 20px 0px 20px 0px;
-}
-
-#top-list {
+h2 {
     font-family: Tahoma;
     font-size: 24px;
-    
-    display: inline-block;
-    margin: 0px 220px;
-    text-align: center;
-    
+}
+
+.top-labels {
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+
+section {
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;    
 }
 
 .shopping {
     text-align: center;
-    position: relative;
-    width: 500px;
-    height: 500px;
     border: 5px solid black;
-    float: left;
-    margin: 0px 25px 0px 75px;
-    box-sizing: border-box;
+    max-width: 25em;
+    min-height: 28em;
+    padding: 1em;
 }
+
 
 .inventory {
     text-align: center;
-    position: relative;
-    width: 500px;
-    height: 500px;
     border: 5px solid black;
-    float: right;
-    margin: 0px 75px 0px 25px;
-    box-sizing: border-box;
+    max-width: 25em;
+    min-height: 28em;
+    padding: 1em;
 }
+
 
 .item-name {
-    margin: 0 auto;
     margin-top: 20px;
     text-align: center;
-    width: 330px;
+    width: 320px;
     padding: 4px;
     font-family: 'Electrolize', sans-serif;
     font-size: 15px;
-    /*background-color: #B8B8B8;*/
     border: 2px solid black;
 }
 
-#tags {
-    margin: 0 auto;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 350px;
+
+.tag-name {
+    text-align: left;
+    width: 8em;
     padding: 4px;
     font-family: 'Electrolize', sans-serif;
-    font-size: 15px;
-    /*background-color: #B8B8B8;*/
-    border: 2px solid black;
 }
 
 input::-webkit-input-placeholder {
@@ -91,13 +94,13 @@ input:focus {
 }
 
 .items {
-    margin: 60px;
-    margin-top: 0;
+    margin: 20px;
+    margin-top: 0px;
     padding-left: 15px;
     display: block;
     font-family: 'Electrolize', sans-serif;
     color: #4C4C4C;
-    /*border: 2px solid #4C4C4C;*/
+    text-align: left;
 }
 
 .items p {
@@ -117,6 +120,7 @@ input:focus {
 .fa-arrow-right:hover {
     cursor: default;
 }
+
 ol {
     padding-left: 20px;
 }
@@ -133,31 +137,16 @@ li:last-child {
     list-style: none;
 }
 
-#topBoxOne {
-    text-align: center;
-}
-
 button {
   background-color: white;
 }
 
 .search-field {
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px;
     text-align: center;
     width: 350px;
     padding: 4px;
     font-family: 'Electrolize', sans-serif;
     font-size: 15px;
-    /*background-color: #B8B8B8;*/
     border: 2px solid black;
-}
-
-.shopping-list {
-  text-align: left;
-}
-
-.inventory-list {
-  text-align: left;
 }

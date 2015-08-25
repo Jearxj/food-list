@@ -207,8 +207,9 @@ $(document).ready(function () {
   var dataToDisplay = function(data, move) { 
     var wholeDisplay = $('<div></div>');
     var headerDisplay = $('<h3 class="searchable"></h3>');
+    var tagsLabel = $('<i class="fa fa-tags"></i>');
     
-    wholeDisplay.append(headerDisplay);
+    wholeDisplay.append(headerDisplay, tagsLabel);
     for (var i = 0; i < data.tags.length; i++) {
       var tagDisplay = $('<span class="tag-name searchable"></span>');
       tagDisplay.text(data.tags[i]);
