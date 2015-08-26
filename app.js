@@ -209,7 +209,10 @@ $(document).ready(function () {
     var headerDisplay = $('<h3 class="searchable"></h3>');
     var tagsLabel = $('<i class="fa fa-tags"></i>');
     
-    wholeDisplay.append(headerDisplay, tagsLabel);
+    wholeDisplay.append(headerDisplay);
+    if (data.tags.length !== 0) {
+        wholeDisplay.append(tagsLabel);
+    }
     for (var i = 0; i < data.tags.length; i++) {
       var tagDisplay = $('<span class="tag-name searchable"></span>');
       tagDisplay.text(data.tags[i]);
