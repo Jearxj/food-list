@@ -29,6 +29,7 @@ $(document).ready(function () {
     
     plusTagButton.on('click', addTagEditor);
     
+    //can we move this out?
     mainEditor.append(headerEditor, tagsLabel);
     headerEditor.on('keyup', oneGiantHandler);
     if (data === undefined) {
@@ -56,7 +57,6 @@ $(document).ready(function () {
   
   $('.search-field').on('keyup', function() {
     var $this = $(this);
-    console.log('parent of this:', $this.parent());
     //field refers to any of the fields in the item, including headers and tags
     var prefixMatchField = function(query, field) {
       console.log("prefixMatchField:", prefixMatchField);
@@ -81,7 +81,7 @@ $(document).ready(function () {
       }
       return false;
     } 
-    //hide search items if query does not match
+    //hide searched items if query does not match
     var hideOrShow = function(query, items) {
       for (var i = 0; i < items.length; i++) {
         var item = $(items[i]);
@@ -98,7 +98,7 @@ $(document).ready(function () {
     
     hideOrShow(query, items);
     
-    });
+  });
   
   var saveAllEditors = function() {
     
