@@ -109,7 +109,6 @@ $(document).ready(function () {
       //empty check
       if (mainEditor.children('.item-name').val() === '') {
         mainEditor.parent().remove();
-        console.log('empty editor getting run');
         return;
       }
       //editor to display
@@ -162,7 +161,6 @@ $(document).ready(function () {
   
   var displayToData = function(wholeDisplay) {
     var tagDisplays = wholeDisplay.children('.tag-name');
-    console.log('tagDisplays: ', tagDisplays);
     var header = $(wholeDisplay.children()[0]).text();
     var location = getLocation(wholeDisplay);
     var tags = [];

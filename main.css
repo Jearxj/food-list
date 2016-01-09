@@ -40,8 +40,9 @@ section {
     border-radius: 5px;
     box-shadow:10px 10px 5px #888888;
     max-width: 25em;
-    min-height: 28em;
+    height: 28em;
     padding: 1em;
+    overflow: auto;
 }
 
 
@@ -51,8 +52,9 @@ section {
     border-radius: 5px;
     box-shadow: 10px 10px 5px #888888;
     max-width: 25em;
-    min-height: 28em;
+    height: 28em;
     padding: 1em;
+    overflow: auto;
 }
 
 
